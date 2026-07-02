@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImagePress — Compresor de Imágenes</title>
+  <meta name="description"
+    content="Comprime imágenes JPG, PNG y WebP al instante, sin subir nada a ningún servidor. 100% en tu navegador.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-brand">
+      <div class="header-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9l4-4 4 4 4-8 4 8" />
+        </svg>
+      </div>
+      <span class="header-title">Imgrar</span>
+    </div>
+    <span class="header-badge">100% local &middot; sin guardar datos</span>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema claro/oscuro">
+      <span class="theme-toggle-thumb">
+        <!-- Sol -->
+        <span class="theme-toggle-icon-sun">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+        </span>
+        <!-- Luna -->
+        <span class="theme-toggle-icon-moon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </span>
+      </span>
+    </button>
+  </header>
+
+  <div class="hero">
+    <h1>Comprime<br><span>sin perder calidad</span></h1>
+    <p>Arrastra tus imágenes y obtén archivos más ligeros al instante. Todo sucede en tu dispositivo.</p>
+    <div class="pills">
+      <span class="pill">JPG</span>
+      <span class="pill">PNG</span>
+      <span class="pill">WebP</span>
+      <span class="pill">Lote ilimitado</span>
+      <span class="pill">Descarga en ZIP</span>
+    </div>
+  </div>
+
+  <div class="wrapper">
+
+    <div id="drop-zone">
+      <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple>
+      <div class="dz-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3a3a3a" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <path d="M3 9l4-4 4 4 4-8 4 8" />
+        </svg>
+      </div>
+      <div class="dz-t">Arrastra imágenes aquí</div>
+      <div class="dz-s">o haz clic para seleccionar archivos</div>
+      <div class="dz-badges">
+        <span class="pill">JPG</span>
+        <span class="pill">PNG</span>
+        <span class="pill">WebP</span>
+        <span class="pill">Múltiples archivos</span>
+      </div>
+    </div>
+
+    <div id="results">
+
+      <div class="stats-bar">
+        <div class="stat-chip">
+          <span class="sl">Archivos</span>
+          <span class="sv" id="st-n">0</span>
+        </div>
+        <div class="stat-chip">
+          <span class="sl">Original</span>
+          <span class="sv" id="st-o">—</span>
+        </div>
+        <div class="stat-chip">
+          <span class="sl">Comprimido</span>
+          <span class="sv" id="st-c">—</span>
+        </div>
+        <div class="stat-chip">
+          <span class="sl">Ahorro</span>
+          <span class="sv good" id="st-s">—</span>
+        </div>
+      </div>
+
+      <div class="ctrl-panel">
+        <div class="ctrl-group">
+          <label>Calidad: <b id="ql">85%</b></label>
+          <input type="range" id="qslider" min="5" max="100" step="5" value="85">
+        </div>
+        <div class="ctrl-group" style="flex:0;min-width:auto">
+          <label>Formato</label>
+          <select id="fmt">
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+            <option value="image/png">PNG</option>
+          </select>
+        </div>
+        <button class="btn-compress" id="compress-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          Comprimir imágenes
+        </button>
+        <div id="add-wrap">
+          <input type="file" id="add-input" accept="image/jpeg,image/png,image/webp" multiple>
+          <button class="btn btn-ghost">+ Agregar más</button>
+        </div>
+      </div>
+
+      <p class="pending-hint" id="pending-hint">
+        Ajusta la calidad y el formato, luego pulsa <b>Comprimir imágenes</b>
+      </p>
+
+      <div id="prog-wrap">
+        <div class="prog-header">
+          <span class="prog-label" id="prog-t">Procesando…</span>
+          <span class="prog-pct" id="prog-p">0%</span>
+        </div>
+        <div class="prog-track">
+          <div class="prog-fill" id="prog-f"></div>
+        </div>
+      </div>
+
+      <div class="foot" id="foot" style="display:none">
+        <button class="btn btn-primary" id="dl-all">&#11015; Descargar todo como ZIP</button>
+        <button class="btn btn-ghost" id="reset-btn">Empezar de nuevo</button>
+      </div>
+
+      <div id="grid"></div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
